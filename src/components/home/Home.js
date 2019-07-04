@@ -192,7 +192,7 @@ class Home extends Component {
                     height="30"
                     className="d-inline-block align-top"
                     alt="React Bootstrap logo"
-                  />{'React-Bootstrap'}</Navbar.Brand>
+                  /> {' React-Bootstrap'}</Navbar.Brand>
                   <Navbar.Toggle aria-controls="basic-navbar-nav" />
                   <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">

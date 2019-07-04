@@ -5,7 +5,9 @@
     padding: 40px 40px;
     background: #fff;
 }*/
-
+.navbar-brand>img {
+    display: -webkit-inline-box !important;
+}
 .center{
 	text-align: center;
     }
