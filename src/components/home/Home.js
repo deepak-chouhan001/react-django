@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import axios from 'axios';
 import store from 'store';
 import { Redirect } from "react-router-dom";
-import { Row,Col, Form, FormGroup, ControlLabel, Navbar, Nav, NavItem, Radio } from 'react-bootstrap';
+import { Row,Col, Form, FormGroup, ControlLabel, Navbar, Nav, NavItem, Radio, Button } from 'react-bootstrap';
 import './home.css';
 import logo from "../../img/logo.png";
 import userImg from "../../img/user.jpg";
 // import Multiselect from "react-bootstrap-multiselect";
-import BarChart from 'react-bar-chart';
+// import BarChart from 'react-bar-chart';
 import Select from 'react-select';
 import CanvasJSReact from './canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -30,25 +30,25 @@ class Home extends Component {
             username:udata.data.fullname,
             // selUser:null,
             myData : [
-                        {value:'Afghanistan',selected:true},
-                        {value:'Albania'},
-                        {value:'Algeria'},
-                        {value:'Andorra'},
-                        {value:'Angola'},
-                        {value:'Albania'},
-                        {value:'Algeria'},
-                        {value:'Andorra'},
-                        {value:'Bhutan'},
-                        {value:'Bolivia'},
-                        {value:'Brazil'},
-                        {value:'China'},
-                        {value:'Colombia'},
-                        {value:'Comoros'},
-                        {value:'India'},
-                        {value:'Indonesia'},
-                        {value:'Italy'},
+                        // {value:'Afghanistan',selected:true},
+                        // {value:'Albania'},
+                        // {value:'Algeria'},
+                        // {value:'Andorra'},
+                        // {value:'Angola'},
+                        // {value:'Albania'},
+                        // {value:'Algeria'},
+                        // {value:'Andorra'},
+                        // {value:'Bhutan'},
+                        // {value:'Bolivia'},
+                        // {value:'Brazil'},
+                        // {value:'China'},
+                        // {value:'Colombia'},
+                        // {value:'Comoros'},
+                        // {value:'India'},
+                        // {value:'Indonesia'},
+                        // {value:'Italy'},
                     ],
-            selUserData:udata.data
+            selUserData:{}
             // chartData:cdata
         }
         
@@ -125,60 +125,57 @@ class Home extends Component {
     render() {
 
         const { username,myData, selUserData } = this.state;
-        const margin = {top: 30, right: 20, bottom: 20, left: 40};
-        // const data1 = [
-        //                   {text: 'Jan', value: 5}, 
-        //                   {text: 'Feb', value: 10},
-        //                   {text: 'Mar', value: 4}, 
-        //                   {text: 'Apr', value: 9}, 
-        //                   {text: 'Jun', value: 7} 
-        //                 ];
-
-
-        // ------------- normal graph --------
-        const data1 = [];
-        const myUser = selUserData.graph;
-        console.log("graph data",myUser);
-        console.log("selected user data",selUserData);
-        myUser.map((e, key) => {
-            var temp = {label:e.text,y:parseInt(e.value)}
-            data1.push(temp);
-            return data1;
-        })
-        console.log("djfkdjfkjdkjfk----",data1);
+        
+        console.log("selUserData",selUserData);
 
         let newSelect = [];
         myData.map((e, key) => {
-            var temp = {value:e.id,label:e.fullname}
-            newSelect.push(temp);
+            if(parseInt(e.id) !== parseInt(store.get('userid'))){
+                var temp = {value:e.id,label:e.fullname}
+                newSelect.push(temp);
+            }
             return newSelect;
         })
 
-        // ------------- ./graph ------------
+        console.log("userid----",store.get('userid'));
+        if(Object.getOwnPropertyNames(selUserData).length >= 1){
+            // ------------- normal graph --------
+                const data1 = [];
+                const myUser = selUserData.graph;
+                console.log("graph data",myUser);
+                console.log("selected user data",selUserData);
+                myUser.map((e, key) => {
+                    var temp = {label:e.text,y:parseInt(e.value)}
+                    data1.push(temp);
+                    return data1;
+                })
+                console.log("djfkdjfkjdkjfk----",data1);
 
-        // ----------canvas -----------------
+                // ------------- ./graph ------------
 
-        const options = {
-            animationEnabled: true,
-            theme: "light2",
-            title:{
-                text: ""
-            },
-            axisX: {
-                title: "Months",
-                reversed: false,
-            },
-            axisY: {
-                title: "Count",
-                labelFormatter: this.addSymbols
-            },
-            data: [{
-                type: "column",
-                dataPoints: data1
-            }]
-        }
+                // ----------canvas -----------------
 
-        console.log("uuuuuu----",options);
+                const options = {
+                    animationEnabled: true,
+                    theme: "light2",
+                    title:{
+                        text: ""
+                    },
+                    axisX: {
+                        title: "Months",
+                        reversed: false,
+                    },
+                    axisY: {
+                        title: "Count",
+                        labelFormatter: this.addSymbols
+                    },
+                    data: [{
+                        type: "column",
+                        dataPoints: data1
+                    }]
+                }
+
+                console.log("uuuuuu----",options);
         ///--------------------------------
         // ----------./canvas ---------------
 
@@ -264,6 +261,8 @@ class Home extends Component {
                         <p>
                             {selUserData.mobile}
                         </p>
+                        <Button className="mb-15 pull-left" bsStyle="primary">Update</Button>
+                        <Button className="mb-15 pull-right" bsStyle="danger">Delete User</Button>
                     </Col>
                     <Col xs={12} md={12} className="hr">
                         
@@ -277,6 +276,45 @@ class Home extends Component {
                 </Row>
                     </div>
                         )
+        }else{
+            return (
+            <div className="Home" onLoad={this.getAllUser}>
+                <Navbar bg="light" expand="lg">
+                  <Navbar.Brand href="#home">
+                  <img
+                    src={logo}
+                    width="30"
+                    height="30"
+                    className="d-inline-block align-top"
+                    alt="React Bootstrap logo"
+                  /> {' React-Bootstrap'}</Navbar.Brand>
+                  <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                  <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="mr-auto">
+                        <NavItem href="">Home</NavItem>
+                        <NavItem href="">About Us</NavItem>
+                        <NavItem href="">Setting</NavItem>
+                        <NavItem href="#" onClick={this.logOutHandler}>Logout</NavItem>
+                    </Nav>
+                  </Navbar.Collapse>
+                </Navbar>
+                <Row className="show-grid">
+                <h1 className="center">Welcome to {username}</h1>
+                <Col xs={4} md={4}></Col>
+                <Col xs={4} md={4}>
+                <Form>
+                  <FormGroup controlId="formControlsSelect">
+                  <ControlLabel>Select User</ControlLabel>
+                    <Select options={newSelect} onChange={this.userDetail.bind(
+                        this)} />
+                </FormGroup>
+                </Form>
+                </Col>
+                </Row>
+                </div>
+            )
+        }
+        
         }
         
     }

@@ -8,6 +8,18 @@
 .navbar-brand>img {
     display: -webkit-inline-box !important;
 }
+.canvasjs-chart-credit{
+	display: none;
+}
+.mb-5{
+	margin-bottom: 5px;
+}
+.mb-10{
+	margin-bottom: 10px;
+}
+.mb-15{
+	margin-bottom: 15px;
+}
 .center{
 	text-align: center;
     }

@@ -65,6 +65,7 @@ class Login extends Component {
                 });
                 store.set('loggedIn', true);
                 store.set('userdata',response.data);
+                store.set('userid',response.data.data.id);
                 alert("You are successfully signed in...");
                 setTimeout(() => {
                      window.location.reload();
@@ -104,7 +105,9 @@ class Login extends Component {
                                 <ControlLabel>Password</ControlLabel>
                                 <FormControl type="password" value={password} name="password" placeholder="Enter your password" onChange={this.handleInputChange} required  />
                             </FormGroup>
-                            <Button type="submit" bsStyle="primary">Sign-In</Button>
+                            <Button type="submit" bsStyle="primary" block>Sign-In</Button>
+                            <Button block>Register</Button>
+                            <Button bsStyle="link" className="pull-right">Forgot Password</Button>
                         </Form>
                     </Row>
                 </div>
